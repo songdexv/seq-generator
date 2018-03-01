@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.songdexv.seqgenerator.dao.mapper.SgSequenceMapper" >
+  <resultMap id="BaseResultMap" type="com.songdexv.seqgenerator.dao.entity.SgSequence" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="seq_name" property="seqName" jdbcType="VARCHAR" />
+    <result column="seq_value" property="seqValue" jdbcType="BIGINT" />
+    <result column="min_value" property="minValue" jdbcType="BIGINT" />
+    <result column="max_value" property="maxValue" jdbcType="BIGINT" />
+    <result column="step" property="step" jdbcType="BIGINT" />
+    <result column="memo" property="memo" jdbcType="VARCHAR" />
+    <result column="gmt_create" property="gmtCreate" jdbcType="TIMESTAMP" />
+    <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, seq_name, seq_value, min_value, max_value, step, memo, gmt_create, gmt_modified
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.songdexv.seqgenerator.dao.entity.SgSequenceExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from sg_sequence
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from sg_sequence
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from sg_sequence
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <select id="selectByExampleWithPaging" resultMap="BaseResultMap" parameterType="com.songdexv.seqgenerator.dao.entity.SgSequenceExample" >
+    select
+    <include refid="Base_Column_List" />
+    from sg_sequence
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    limit ${startIndex},${pageSize}
+  </select>
+  <delete id="deleteByExample" parameterType="com.songdexv.seqgenerator.dao.entity.SgSequenceExample" >
+    delete from sg_sequence
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.songdexv.seqgenerator.dao.entity.SgSequence" >
+    insert into sg_sequence (id, seq_name, seq_value, 
+      min_value, max_value, step, 
+      memo, gmt_create, gmt_modified)
+    values (#{id,jdbcType=BIGINT}, #{seqName,jdbcType=VARCHAR}, #{seqValue,jdbcType=BIGINT}, 
+      #{minValue,jdbcType=BIGINT}, #{maxValue,jdbcType=BIGINT}, #{step,jdbcType=BIGINT}, 
+      #{memo,jdbcType=VARCHAR}, now(), now())
+  </insert>
+  <insert id="insertSelective" parameterType="com.songdexv.seqgenerator.dao.entity.SgSequence" >
+    insert into sg_sequence
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="seqName != null" >
+        seq_name,
+      </if>
+      <if test="seqValue != null" >
+        seq_value,
+      </if>
+      <if test="minValue != null" >
+        min_value,
+      </if>
+      <if test="maxValue != null" >
+        max_value,
+      </if>
+      <if test="step != null" >
+        step,
+      </if>
+      <if test="memo != null" >
+        memo,
+      </if>
+      gmt_create,
+      gmt_modified,
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="seqName != null" >
+        #{seqName,jdbcType=VARCHAR},
+      </if>
+      <if test="seqValue != null" >
+        #{seqValue,jdbcType=BIGINT},
+      </if>
+      <if test="minValue != null" >
+        #{minValue,jdbcType=BIGINT},
+      </if>
+      <if test="maxValue != null" >
+        #{maxValue,jdbcType=BIGINT},
+      </if>
+      <if test="step != null" >
+        #{step,jdbcType=BIGINT},
+      </if>
+      <if test="memo != null" >
+        #{memo,jdbcType=VARCHAR},
+      </if>
+      now(),
+      now(),
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.songdexv.seqgenerator.dao.entity.SgSequenceExample" resultType="java.lang.Integer" >
+    select count(*) from sg_sequence
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update sg_sequence
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.seqName != null" >
+        seq_name = #{record.seqName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.seqValue != null" >
+        seq_value = #{record.seqValue,jdbcType=BIGINT},
+      </if>
+      <if test="record.minValue != null" >
+        min_value = #{record.minValue,jdbcType=BIGINT},
+      </if>
+      <if test="record.maxValue != null" >
+        max_value = #{record.maxValue,jdbcType=BIGINT},
+      </if>
+      <if test="record.step != null" >
+        step = #{record.step,jdbcType=BIGINT},
+      </if>
+      <if test="record.memo != null" >
+        memo = #{record.memo,jdbcType=VARCHAR},
+      </if>
+      gmt_modified = now(),
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update sg_sequence
+    set id = #{record.id,jdbcType=BIGINT},
+      seq_name = #{record.seqName,jdbcType=VARCHAR},
+      seq_value = #{record.seqValue,jdbcType=BIGINT},
+      min_value = #{record.minValue,jdbcType=BIGINT},
+      max_value = #{record.maxValue,jdbcType=BIGINT},
+      step = #{record.step,jdbcType=BIGINT},
+      memo = #{record.memo,jdbcType=VARCHAR},
+      gmt_modified = now()
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.songdexv.seqgenerator.dao.entity.SgSequence" >
+    update sg_sequence
+    <set >
+      <if test="seqName != null" >
+        seq_name = #{seqName,jdbcType=VARCHAR},
+      </if>
+      <if test="seqValue != null" >
+        seq_value = #{seqValue,jdbcType=BIGINT},
+      </if>
+      <if test="minValue != null" >
+        min_value = #{minValue,jdbcType=BIGINT},
+      </if>
+      <if test="maxValue != null" >
+        max_value = #{maxValue,jdbcType=BIGINT},
+      </if>
+      <if test="step != null" >
+        step = #{step,jdbcType=BIGINT},
+      </if>
+      <if test="memo != null" >
+        memo = #{memo,jdbcType=VARCHAR},
+      </if>
+      gmt_modified = now(),
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.songdexv.seqgenerator.dao.entity.SgSequence" >
+    update sg_sequence
+    set seq_name = #{seqName,jdbcType=VARCHAR},
+      seq_value = #{seqValue,jdbcType=BIGINT},
+      min_value = #{minValue,jdbcType=BIGINT},
+      max_value = #{maxValue,jdbcType=BIGINT},
+      step = #{step,jdbcType=BIGINT},
+      memo = #{memo,jdbcType=VARCHAR},
+      gmt_modified = now()
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectByPrimaryKeyForUpdate" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from sg_sequence
+    where id = #{id,jdbcType=BIGINT} for update 
+  </select>
+  <select id="selectByExampleForUpdate" resultMap="BaseResultMap" parameterType="com.songdexv.seqgenerator.dao.entity.SgSequenceExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from sg_sequence
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    for update
+  </select>
+  <insert id="insertBatch" parameterType="com.songdexv.seqgenerator.dao.entity.SgSequence" >
+    insert into sg_sequence (id, seq_name, seq_value, 
+      min_value, max_value, step, 
+      memo, gmt_create, gmt_modified)
+    values
+    <foreach item="index" separator="," collection="list" >
+      (#{index.id,jdbcType=BIGINT}, #{index.seqName,jdbcType=VARCHAR}, #{index.seqValue,jdbcType=BIGINT}, 
+        #{index.minValue,jdbcType=BIGINT}, #{index.maxValue,jdbcType=BIGINT}, #{index.step,jdbcType=BIGINT}, 
+        #{index.memo,jdbcType=VARCHAR}, now(), now())
+    </foreach>
+  </insert>
+</mapper>
